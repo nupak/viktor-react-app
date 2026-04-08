@@ -3,7 +3,7 @@
   line-height: 1.5;
   font-weight: 400;
   color: #f3f4f6;
-  background: #07060d;
+  background-color: #07060d;
 }
 
 * {
@@ -12,7 +12,14 @@
 
 body {
   margin: 0;
-  background: #07060d;
+  background-color: #07060d;
+  background-image:
+    linear-gradient(180deg, rgba(7, 6, 13, 0.88) 0%, rgba(7, 6, 13, 0.9) 50%, rgba(7, 6, 13, 0.88) 100%),
+    url("/celebration-pattern-design.png");
+  background-size: auto, 680px auto;
+  background-repeat: repeat, repeat;
+  background-position: center top;
+  background-attachment: fixed;
 }
 
 #root {
@@ -945,7 +952,13 @@ h1 {
   gap: 1rem;
   text-align: center;
   padding: 1rem;
-  background: radial-gradient(circle at 20% 20%, #1e1b4b, #030712 65%);
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(30, 27, 75, 0.88), rgba(3, 7, 18, 0.92) 65%),
+    url("/celebration-pattern-design.png");
+  background-size: auto, 680px auto;
+  background-repeat: no-repeat, repeat;
+  background-position: center, center top;
+  background-attachment: fixed;
 }
 
 .wheel-wrap {
