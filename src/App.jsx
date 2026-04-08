@@ -33,6 +33,30 @@ function pad2(value) {
 function CountdownPage({ remaining }) {
   return (
     <main className="countdown-page">
+      <div className="fireworks left" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className="fireworks right" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className="confetti left" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+      </div>
+      <div className="confetti right" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+      </div>
       <section className="countdown-card">
         <h1 className="countdown-title">Last Chance to Feel Young 🚨</h1>
         <div className="timer-grid">
