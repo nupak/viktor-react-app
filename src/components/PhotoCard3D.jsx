@@ -66,18 +66,9 @@ function PhotoCard3D({ photo }) {
         <div className="photo3d-face photo3d-back">
           {backSrc ? (
             <div className="photo3d-back-image-wrap">
-              <img src={backSrc} alt={photo.backTitle || `${photo.title} back`} loading="lazy" />
-              <div className="photo3d-back-caption">
-                <h4>{photo.backTitle}</h4>
-                <p>{photo.backText}</p>
-              </div>
+              <img src={backSrc} alt="" loading="lazy" />
             </div>
-          ) : (
-            <>
-              <h4>{photo.backTitle}</h4>
-              <p>{photo.backText}</p>
-            </>
-          )}
+          ) : null}
         </div>
       </div>
     </article>

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import PhotoCard3D from "./components/PhotoCard3D";
-import photoStories from "./data/photoStories.json";
+import MemoryGallery from "./components/MemoryGallery";
+import photoStoriesData from "./data/photoStories.json";
 
 const TARGET_DATE_MSK = new Date("2026-04-09T00:00:00+03:00");
 const CONTINUE_PATH = "/continue";
@@ -31,6 +32,15 @@ function CountdownPage({ timer, isUnlocked, candleIndex, onSecretOpen, onTempOpe
       <div className="confetti right" aria-hidden="true"><i /><i /><i /><i /><i /></div>
 
       <div className="candle-strip">
+        <button
+          type="button"
+          className="candle temp-green active"
+          onClick={onTempOpen}
+          aria-label="Временно открыть страницу поздравления"
+        >
+          <span className="wick" />
+          <span className="flame" />
+        </button>
         {candles.map((name, index) => {
           const unlockedCandle = isUnlocked && index === candleIndex;
           const cakeCandle = index === 1 || index === 4;
@@ -65,7 +75,12 @@ function CountdownPage({ timer, isUnlocked, candleIndex, onSecretOpen, onTempOpe
   );
 }
 
-function BirthdayPage({ stories, onOpenWheel }) {
+function BirthdayPage({ stories, gallery, onOpenWheel }) {
+  const featureReasons = [
+    "Никогда не бросаешь в беде и поможешь и поддержишь в трудную минуту!",
+    "Всегда помнишь и сохраняешь контакт и будешь на связи",
+    "Поддерживаешь любые совместные начинания, пусть даже прогулять пары (ну кроме тех самых))"
+  ];
   const [badgeConfettiBits, setBadgeConfettiBits] = useState([]);
   const [titleConfettiBits, setTitleConfettiBits] = useState([]);
   const [badgeClicks, setBadgeClicks] = useState(0);
@@ -202,30 +217,56 @@ function BirthdayPage({ stories, onOpenWheel }) {
       </section>
 
       <section className="feature-cards">
+        <div className="feature-intro">
+          <h2>3 + 1000000 причин почему ты невероятный!!!</h2>
+        </div>
         <div className="feature-cards-grid">
-          {stories.slice(0, 3).map((item, idx) => (
-            <article key={`feature-${item.id}`} className="feature-card">
+          {featureReasons.map((reason, idx) => (
+            <article key={`feature-${idx + 1}`} className="feature-card">
               <div className="face face1">
                 <div className="content">
-                  <h2>{item.title}</h2>
-                  <p>{item.text}</p>
-                  {item.featureLink ? (
-                    <a
-                      className="feature-link"
-                      href={item.featureLink}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Открыть ссылку
-                    </a>
-                  ) : null}
+                  <h2>Причина {idx + 1}</h2>
+                  <p>{reason}</p>
                 </div>
               </div>
               <div className={`face face2 v${idx + 1}`}>
-                <h2>{item.id}</h2>
+                <h2>{idx + 1}</h2>
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="memory-path" aria-labelledby="memory-path-heading">
+        <h2 id="memory-path-heading" className="memory-path-title">
+          Мы прошли немалый интересный путь
+        </h2>
+        <MemoryGallery gallery={gallery} />
+      </section>
+
+      <section className="gallery-referat-coda" aria-label="Пожелание">
+        <div className="gallery-referat-coda__paper">
+          <p>
+            Да, жизнь чуть-чуть внесла свои коррективы, но я верю, что мы ещё успеем нагнать всё!
+          </p>
+          <p className="gallery-referat-coda__closing">
+            <span className="gallery-referat-coda__festoon" aria-hidden="true">
+              <span className="referat-confetti referat-confetti--a" />
+              <span className="referat-confetti referat-confetti--b" />
+              <span className="referat-confetti referat-confetti--c" />
+              <span className="referat-confetti referat-confetti--d" />
+              <span className="referat-confetti referat-confetti--e" />
+            </span>
+            <span className="gallery-referat-coda__closing-text">
+              <span className="referat-emoji">🎈 🎉 </span>
+              <span className="referat-words">С днём рождения! </span>
+              <span className="referat-emoji">🥳 </span>
+              <span className="referat-words">Будь самым ярким </span>
+              <span className="referat-emoji">✨</span>
+              <span className="referat-words">, будь самым счастливым! </span>
+              <span className="referat-emoji">🎂 💛</span>
+            </span>
+          </p>
         </div>
       </section>
     </main>
@@ -288,7 +329,13 @@ function App() {
   }
 
   if (pathname === CONTINUE_PATH && (isUnlocked || tempUnlocked)) {
-    return <BirthdayPage stories={photoStories} onOpenWheel={openWheel} />;
+    return (
+      <BirthdayPage
+        stories={photoStoriesData.stories}
+        gallery={photoStoriesData.gallery}
+        onOpenWheel={openWheel}
+      />
+    );
   }
 
   return (
@@ -303,7 +350,7 @@ function App() {
 }
 
 function WheelPage({ onBack }) {
-  const sectors = [
+  const baseSectors = [
     "Носки",
     "Косплей",
     "Латекс",
@@ -313,9 +360,25 @@ function WheelPage({ onBack }) {
     "Маски",
     "Тайна"
   ];
+  const boostedSectors = [
+    "Дожить до 30",
+    "Иметь 3D принтер",
+    "ездить на самокате",
+    "собирать коллекции из ikea",
+    "не есть соусы",
+    "вейпмашинить",
+    "не дышать на мосту",
+    "играть в варфрейм",
+    "скрывать мам",
+    "иметь дачу",
+    "воровать таблички",
+    "клеить таблички"
+  ];
+  const weightedPool = [...baseSectors, ...boostedSectors];
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [result, setResult] = useState("");
+  const [isBoostedResult, setIsBoostedResult] = useState(false);
 
   const spinWheel = () => {
     if (spinning) return;
@@ -326,13 +389,11 @@ function WheelPage({ onBack }) {
     setRotation(nextRotation);
 
     setTimeout(() => {
-      const normalized = ((nextRotation % 360) + 360) % 360;
-      const sectorAngle = 360 / sectors.length;
-      const pointerAngle = (360 - normalized + sectorAngle / 2) % 360;
-      const index = Math.floor(pointerAngle / sectorAngle);
-      setResult(sectors[index]);
+      const picked = weightedPool[Math.floor(Math.random() * weightedPool.length)];
+      setResult(picked);
+      setIsBoostedResult(boostedSectors.includes(picked));
       setSpinning(false);
-    }, 4200);
+    }, 3150);
   };
 
   return (
@@ -365,7 +426,7 @@ function WheelPage({ onBack }) {
           Вернуться назад
         </button>
       </div>
-      {result ? <p className="wheel-result">Выпало: {result}</p> : null}
+      {result ? <p className={`wheel-result ${isBoostedResult ? "boosted" : ""}`}>Выпало: {result}</p> : null}
     </main>
   );
 }
